@@ -1,5 +1,6 @@
 use std::ops::{Index, IndexMut};
 use std::cmp::PartialEq;
+use std::mem;
 
 #[derive(Debug)]
 pub enum ConsList<T> {
@@ -32,14 +33,19 @@ impl<T> ConsList<T> {
         *next = other
     }
 
-//    fn _insert(&mut self, index: usize, other: Box<ConsList<T>>) {
-//        let (_, next) = self._index_node(index);
-//        if next.is_empty() {
-//            *next = other
-//        } else {
-//            let
-//        }
-//    }
+    fn _insert(&mut self, index: usize, other: ConsList<T>) {
+        match index {
+            0 => {
+                let former = mem::replace(self, other);
+                self.append(former)
+            }
+            _ => {
+                let (_, current) = self._index_node(index - 1);
+                let former = mem::replace(current, Box::new(other));
+                current._append(former)
+            }
+        }
+    }
 }
 
 impl<T> ConsList<T> {
@@ -55,21 +61,25 @@ impl<T> ConsList<T> {
         ConsList::Cons(data, Box::new(self))
     }
 
-//    pub fn insert(&mut self, index: usize, data: T) {
-//        self._insert(index, Box::new())
-//    }
-
     pub fn push_back(&mut self, data: T) {
-        self.append(ConsList::Cons(data, Box::new(ConsList::Nil)))
+        self.append(ConsList::new().push(data))
     }
 
     pub fn append(&mut self, other: ConsList<T>) {
         self._append(Box::new(other))
     }
 
+    pub fn insert(&mut self, index: usize, data: T) {
+        self._insert(index, ConsList::new().push(data))
+    }
+
+    pub fn insert_list(&mut self, index: usize, list: ConsList<T>) {
+        self._insert(index, list)
+    }
+
     pub fn is_empty(&self) -> bool {
         if let ConsList::Nil = self {
-            return true
+            return true;
         }
         false
     }
@@ -199,6 +209,25 @@ mod tests {
     }
 
     #[test]
-    fn append() {}
+    fn is_empty() {
+        assert!(ConsList::<u8>::new().is_empty())
+    }
+
+    #[test]
+    fn index() {
+        let cons_list = ConsList::from(&[2usize, 1, 0] as &[usize]);
+        for i in 0..3 {
+            assert_eq!(i, cons_list[i]);
+        }
+    }
+
+    #[test]
+    fn push_back() {
+        let mut cons_list = ConsList::new();
+        cons_list.push_back(1u8);
+        cons_list.push_back(2u8);
+        cons_list.push_back(3u8);
+        assert_eq!(&cons_list, &[1u8, 2, 3] as &[u8])
+    }
 }
 
