@@ -275,8 +275,8 @@ mod tests {
 
     #[test]
     fn append() {
-        let mut linked_list = LinkedList::from(&[5usize, 4, 3] as &[usize]);
-        linked_list.append(LinkedList::from(&[2usize, 1, 0] as &[usize]));
+        let mut linked_list = LinkedList::from(&[2usize, 1, 0] as &[usize]);
+        linked_list.append(LinkedList::from(&[5usize, 4, 3] as &[usize]));
         for i in 0..6 {
             assert_eq!(i, linked_list[i]);
         }
