@@ -187,70 +187,99 @@ impl<T: PartialEq> PartialEq<[T]> for Node<T> {
         !self.eq(other)
     }
 }
-//
-//#[cfg(test)]
-//mod tests {
-//    use super::LinkedList;
-//
-//    #[test]
-//    fn new() {
-//        assert_eq!(LinkedList::<u8>::new(), LinkedList::Nil)
-//    }
-//
-//    #[test]
-//    fn default() {
-//        let default_list: LinkedList<u8> = Default::default();
-//        assert_eq!(default_list, LinkedList::Nil)
-//    }
-//
-//    #[test]
-//    fn push() {
-//        let cons_list = LinkedList::new().push(2usize).push(1).push(0);
-//        for i in 0..3 {
-//            assert_eq!(i, cons_list[i]);
-//        }
-//    }
-//
-//    #[test]
-//    fn len() {
-//        assert_eq!(0, LinkedList::<u8>::new().len());
-//        assert_eq!(3, LinkedList::new().push(2).push(1).push(0).len());
-//    }
-//
-//    #[test]
-//    fn eq_with_slice() {
-//        let empty_slice: &[u8] = &[];
-//        assert_eq!(&LinkedList::<u8>::new(), empty_slice);
-//        let cons_list = LinkedList::new().push(3u8).push(2u8).push(1u8);
-//        assert_eq!(&cons_list, &[1u8, 2, 3] as &[u8])
-//    }
-//
-//    #[test]
-//    fn from_slice() {
-//        let list = LinkedList::from(&[1, 2, 3] as &[i32]);
-//        assert_eq!(&list, &[3, 2, 1] as &[i32])
-//    }
-//
-//    #[test]
-//    fn is_empty() {
-//        assert!(LinkedList::<u8>::new().is_empty())
-//    }
-//
-//    #[test]
-//    fn index() {
-//        let cons_list = LinkedList::from(&[2usize, 1, 0] as &[usize]);
-//        for i in 0..3 {
-//            assert_eq!(i, cons_list[i]);
-//        }
-//    }
-//
-//    #[test]
-//    fn push_back() {
-//        let mut cons_list = LinkedList::new();
-//        cons_list.push_back(1u8);
-//        cons_list.push_back(2u8);
-//        cons_list.push_back(3u8);
-//        assert_eq!(&cons_list, &[1u8, 2, 3] as &[u8])
-//    }
-//}
-//
+
+impl<T: PartialEq> PartialEq<[T]> for LinkedList<T> {
+    fn eq(&self, other: &[T]) -> bool {
+        <Node<T> as PartialEq<[T]>>::eq(&self.head, other)
+    }
+
+    fn ne(&self, other: &[T]) -> bool {
+        !self.eq(other)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::LinkedList;
+
+    #[test]
+    fn push_front() {
+        let mut linked_list = LinkedList::new();
+        linked_list.push_front(2usize);
+        linked_list.push_front(1);
+        linked_list.push_front(0);
+        for i in 0..3 {
+            assert_eq!(i, linked_list[i]);
+        }
+    }
+
+    #[test]
+    fn push_back() {
+        let mut linked_list = LinkedList::new();
+        linked_list.push_back(0usize);
+        linked_list.push_back(1);
+        linked_list.push_back(2);
+        for i in 0..3 {
+            assert_eq!(i, linked_list[i]);
+        }
+    }
+
+    #[test]
+    fn len() {
+        assert_eq!(0, LinkedList::<u8>::new().len());
+        let mut linked_list = LinkedList::new();
+        linked_list.push_back(0usize);
+        linked_list.push_back(1);
+        linked_list.push_back(2);
+        assert_eq!(3, linked_list.len());
+    }
+
+    #[test]
+    fn eq_with_slice() {
+        let mut linked_list = LinkedList::new();
+        assert_eq!(&linked_list, &[] as &[u8]);
+        linked_list.push_back(0u8);
+        linked_list.push_back(1);
+        linked_list.push_back(2);
+        assert_eq!(&linked_list, &[0u8, 1, 2] as &[u8])
+    }
+
+    #[test]
+    fn from_slice() {
+        let list = LinkedList::from(&[0, 1, 2] as &[i32]);
+        assert_eq!(&list, &[2, 1, 0] as &[i32])
+    }
+
+    #[test]
+    fn is_empty() {
+        assert!(LinkedList::<u8>::new().is_empty())
+    }
+
+    #[test]
+    fn index() {
+        let linked_list = LinkedList::from(&[2usize, 1, 0] as &[usize]);
+        for i in 0..3 {
+            assert_eq!(i, linked_list[i]);
+        }
+    }
+
+    #[test]
+    fn index_mut() {
+        let mut linked_list = LinkedList::from(&[2usize, 1, 0] as &[usize]);
+        for i in 0..3 {
+            assert_eq!(i, linked_list[i]);
+        }
+        linked_list[0] = 2;
+        assert_eq!(2, linked_list[0])
+    }
+
+    #[test]
+    fn append() {
+        let mut linked_list = LinkedList::from(&[5usize, 4, 3] as &[usize]);
+        linked_list.append(LinkedList::from(&[2usize, 1, 0] as &[usize]));
+        for i in 0..6 {
+            assert_eq!(i, linked_list[i]);
+        }
+    }
+}
+
