@@ -1,5 +1,4 @@
 mod linked_list;
-mod cons_list;
 
 #[cfg(test)]
 mod tests {
