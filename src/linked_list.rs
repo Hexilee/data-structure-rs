@@ -281,5 +281,23 @@ mod tests {
             assert_eq!(i, linked_list[i]);
         }
     }
+
+    #[test]
+    fn insert() {
+        let mut linked_list = LinkedList::from(&[4usize, 2, 1, 0] as &[usize]);
+        linked_list.insert(3, 3);
+        for i in 0..5 {
+            assert_eq!(i, linked_list[i]);
+        }
+    }
+
+    #[test]
+    fn insert_list() {
+        let mut linked_list = LinkedList::from(&[5usize, 2, 1, 0] as &[usize]);
+        linked_list.insert_list(3, LinkedList::from(&[4usize, 3] as &[usize]));
+        for i in 0..6 {
+            assert_eq!(i, linked_list[i]);
+        }
+    }
 }
 
