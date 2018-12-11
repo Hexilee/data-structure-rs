@@ -70,7 +70,7 @@ impl<T> Node<T> {
     }
 
     fn iter(&self) -> Iter<T> {
-        Iter{head: self}
+        Iter { head: self }
     }
 }
 
@@ -129,6 +129,10 @@ impl<T> LinkedList<T> {
             return true;
         }
         false
+    }
+
+    pub fn iter(&self) -> impl Iterator<Item=&T> {
+        self.head.iter()
     }
 }
 
@@ -204,6 +208,16 @@ impl<T: PartialEq> PartialEq<[T]> for LinkedList<T> {
 
     fn ne(&self, other: &[T]) -> bool {
         !self.eq(other)
+    }
+}
+
+impl<'a, T> Iterator for Iter<'a, T> {
+    type Item = &'a T;
+    fn next(&mut self) -> Option<<Self as Iterator>::Item> {
+        match self.head {
+            Node::Cons(item, next) => Some(item),
+            Node::Nil => None
+        }
     }
 }
 
