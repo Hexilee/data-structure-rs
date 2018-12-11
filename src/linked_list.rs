@@ -13,6 +13,11 @@ enum Node<T> {
     Nil,
 }
 
+#[derive(Debug)]
+pub struct Iter<'a, T> {
+    head: &'a Node<T>,
+}
+
 impl<T> Node<T> {
     fn index_node(&mut self, index: usize) -> &mut Box<Node<T>> {
         match self {
@@ -62,6 +67,10 @@ impl<T> Node<T> {
             Node::Nil => len,
             Node::Cons(_, next) => next.len(len + 1)
         }
+    }
+
+    fn iter(&self) -> Iter<T> {
+        Iter{head: self}
     }
 }
 
