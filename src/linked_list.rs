@@ -329,8 +329,7 @@ mod tests {
     #[test]
     fn iter() {
         let mut linked_list = LinkedList::from(&[2usize, 1, 0] as &[usize]);
-        let iter = linked_list.iter();
-        for i in iter {
+        for i in linked_list.iter() {
             assert_eq!(i, &linked_list[*i]);
         }
     }
