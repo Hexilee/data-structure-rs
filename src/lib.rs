@@ -1,10 +1,12 @@
+use std::cmp::{Ord, Ordering};
+
 mod sort;
 mod structure;
 
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
+pub trait Pair {
+    type Key: Ord;
+    type Value;
+    fn key(&self) -> &Self::Key;
+    fn value(&self) -> &Self::Value;
+    fn set_value(&mut self);
 }

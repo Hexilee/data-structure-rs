@@ -1,19 +1,19 @@
-use std::cmp::Ord;
+use crate::Pair;
 use std::cmp::Ordering::*;
 
 type OptionalNode<T> = Option<Box<Node<T>>>;
 
-pub struct BinaryTree<T: Ord> {
+pub struct BinaryTree<T: Pair> {
     root: OptionalNode<T>,
 }
 
-struct Node<T: Ord> {
+struct Node<T: Pair> {
     data: T,
     left: OptionalNode<T>,
     right: OptionalNode<T>,
 }
 
-impl<T: Ord> BinaryTree<T> {
+impl<T: Pair> BinaryTree<T> {
     pub fn new() -> Self {
         Self { root: None }
     }
@@ -26,7 +26,7 @@ impl<T: Ord> BinaryTree<T> {
     }
 }
 
-impl<T: Ord> Node<T> {
+impl<T: Pair> Node<T> {
     fn new(data: T) -> Self {
         Self {
             data,
@@ -40,7 +40,7 @@ impl<T: Ord> Node<T> {
     }
 
     fn insert(&mut self, data: T) {
-        match self.data.cmp(&data) {
+        match self.data.key().cmp(&data.key()) {
             Equal => self.data = data,
             Less => match self.left {
                 Some(ref mut node) => node.insert(data),
@@ -52,4 +52,6 @@ impl<T: Ord> Node<T> {
             },
         }
     }
+
+    //    fn find(&mut self, data: T)
 }
