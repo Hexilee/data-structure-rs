@@ -1,4 +1,5 @@
 use crate::Pair;
+use std::cmp::max;
 use std::cmp::Ordering::*;
 
 type OptionalNode<T> = Option<Box<Node<T>>>;
@@ -22,6 +23,13 @@ impl<T: Pair> BinaryTree<T> {
         match self.root {
             Some(ref mut node) => node.insert(data),
             None => self.root = Some(Node::boxed(data)),
+        }
+    }
+
+    pub fn find(&self, key: &T::Key) -> Option<&T::Value> {
+        match self.root {
+            Some(ref node) => node.find(key),
+            None => None,
         }
     }
 }
@@ -53,5 +61,17 @@ impl<T: Pair> Node<T> {
         }
     }
 
-    //    fn find(&mut self, data: T)
+    fn find(&self, key: &T::Key) -> Option<&T::Value> {
+        match self.data.key().cmp(key) {
+            Equal => Some(self.data.value()),
+            Less => match self.left {
+                Some(ref node) => node.find(key),
+                None => None,
+            },
+            Greater => match self.right {
+                Some(ref node) => node.find(key),
+                None => None,
+            },
+        }
+    }
 }
