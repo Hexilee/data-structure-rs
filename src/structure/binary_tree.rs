@@ -3,7 +3,7 @@ use std::cmp::Ordering::*;
 
 type OptionalNode<T> = Option<Box<Node<T>>>;
 
-pub struct BinaryTree<T: Pair> {
+pub struct BinarySearchTree<T: Pair> {
     root: OptionalNode<T>,
 }
 
@@ -13,7 +13,7 @@ struct Node<T: Pair> {
     right: OptionalNode<T>,
 }
 
-impl<T: Pair> BinaryTree<T> {
+impl<T: Pair> BinarySearchTree<T> {
     pub fn new() -> Self {
         Self { root: None }
     }
@@ -77,11 +77,11 @@ impl<T: Pair> Node<T> {
 
 #[cfg(test)]
 mod tests {
-    use super::BinaryTree;
+    use super::BinarySearchTree;
 
     #[test]
     fn find() {
-        let mut tree = BinaryTree::new();
+        let mut tree = BinarySearchTree::new();
         tree.insert(("c", 0));
         tree.insert(("cpp", 1));
         tree.insert(("rust", 2));
