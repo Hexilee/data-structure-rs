@@ -4,7 +4,7 @@ use std::cmp::Ordering::*;
 type OptionalNode<T> = Option<Box<Node<T>>>;
 
 pub struct BinaryTree<T: Ord> {
-    root: OptionalNode<T>
+    root: OptionalNode<T>,
 }
 
 struct Node<T: Ord> {
@@ -21,7 +21,7 @@ impl<T: Ord> BinaryTree<T> {
     pub fn insert(&mut self, data: T) {
         match self.root {
             Some(ref mut node) => node.insert(data),
-            None => self.root = Some(Node::boxed(data))
+            None => self.root = Some(Node::boxed(data)),
         }
     }
 }
@@ -44,12 +44,12 @@ impl<T: Ord> Node<T> {
             Equal => self.data = data,
             Less => match self.left {
                 Some(ref mut node) => node.insert(data),
-                None => self.left = Some(Node::boxed(data))
+                None => self.left = Some(Node::boxed(data)),
             },
             Greater => match self.right {
                 Some(ref mut node) => node.insert(data),
-                None => self.right = Some(Node::boxed(data))
-            }
+                None => self.right = Some(Node::boxed(data)),
+            },
         }
     }
 }

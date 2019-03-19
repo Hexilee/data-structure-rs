@@ -1,5 +1,5 @@
-mod structure;
 mod sort;
+mod structure;
 
 #[cfg(test)]
 mod tests {

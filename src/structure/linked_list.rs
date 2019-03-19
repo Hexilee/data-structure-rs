@@ -1,6 +1,6 @@
-use std::ops::{Index, IndexMut};
 use std::cmp::PartialEq;
 use std::mem;
+use std::ops::{Index, IndexMut};
 
 #[derive(Debug, PartialEq)]
 pub struct LinkedList<T> {
@@ -21,51 +21,45 @@ pub struct Iter<'a, T> {
 impl<T> Node<T> {
     fn index_node(&mut self, index: usize) -> &mut Box<Node<T>> {
         match self {
-            Node::Cons(_, next) => {
-                match index {
-                    0 => next,
-                    _ => next.index_node(index - 1)
-                }
-            }
-            Node::Nil => panic!("index out of bounds")
+            Node::Cons(_, next) => match index {
+                0 => next,
+                _ => next.index_node(index - 1),
+            },
+            Node::Nil => panic!("index out of bounds"),
         }
     }
 
     fn index_value(&self, index: usize) -> &T {
         match self {
-            Node::Cons(value, next) => {
-                match index {
-                    0 => value,
-                    _ => next.index_value(index - 1)
-                }
-            }
-            Node::Nil => panic!("index out of bounds")
+            Node::Cons(value, next) => match index {
+                0 => value,
+                _ => next.index_value(index - 1),
+            },
+            Node::Nil => panic!("index out of bounds"),
         }
     }
 
     fn index_mut_value(&mut self, index: usize) -> &mut T {
         match self {
-            Node::Cons(value, next) => {
-                match index {
-                    0 => value,
-                    _ => next.index_mut_value(index - 1)
-                }
-            }
-            Node::Nil => panic!("index out of bounds")
+            Node::Cons(value, next) => match index {
+                0 => value,
+                _ => next.index_mut_value(index - 1),
+            },
+            Node::Nil => panic!("index out of bounds"),
         }
     }
 
     fn last(&mut self) -> &mut Node<T> {
         match self {
             Node::Nil => self,
-            Node::Cons(_, next) => next.last()
+            Node::Cons(_, next) => next.last(),
         }
     }
 
     fn len(&self, len: usize) -> usize {
         match self {
             Node::Nil => len,
-            Node::Cons(_, next) => next.len(len + 1)
+            Node::Cons(_, next) => next.len(len + 1),
         }
     }
 
@@ -78,7 +72,7 @@ impl<T> LinkedList<T> {
     fn _index_node(&mut self, index: usize) -> &mut Box<Node<T>> {
         match index {
             0 => &mut self.head,
-            _ => self.head.index_node(index - 1)
+            _ => self.head.index_node(index - 1),
         }
     }
 
@@ -96,7 +90,9 @@ impl<T> LinkedList<T> {
 
 impl<T> LinkedList<T> {
     pub fn new() -> Self {
-        LinkedList { head: Box::new(Node::Nil) }
+        LinkedList {
+            head: Box::new(Node::Nil),
+        }
     }
 
     pub fn len(&self) -> usize {
@@ -131,7 +127,7 @@ impl<T> LinkedList<T> {
         false
     }
 
-    pub fn iter(&self) -> impl Iterator<Item=&T> {
+    pub fn iter(&self) -> impl Iterator<Item = &T> {
         self.head.iter()
     }
 }
@@ -218,8 +214,8 @@ impl<'a, T> Iterator for Iter<'a, T> {
             Node::Cons(item, next) => {
                 self.head = next.as_ref();
                 Some(item)
-            },
-            Node::Nil => None
+            }
+            Node::Nil => None,
         }
     }
 }
@@ -334,4 +330,3 @@ mod tests {
         }
     }
 }
-
