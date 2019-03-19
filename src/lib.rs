@@ -1,4 +1,5 @@
-mod linked_list;
+mod structure;
+mod sort;
 
 #[cfg(test)]
 mod tests {
