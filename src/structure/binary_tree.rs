@@ -1,5 +1,4 @@
 use crate::Pair;
-use std::cmp::max;
 use std::cmp::Ordering::*;
 
 type OptionalNode<T> = Option<Box<Node<T>>>;
@@ -73,5 +72,24 @@ impl<T: Pair> Node<T> {
                 None => None,
             },
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::BinaryTree;
+
+    #[test]
+    fn find() {
+        let mut tree = BinaryTree::new();
+        tree.insert(("c", 0));
+        tree.insert(("cpp", 1));
+        tree.insert(("rust", 2));
+        assert_eq!(&0, tree.find(&"c").unwrap());
+        assert_eq!(&1, tree.find(&"cpp").unwrap());
+        assert_eq!(&2, tree.find(&"rust").unwrap());
+        assert_eq!(None, tree.find(&"go"));
+        tree.insert(("rust", 3));
+        assert_eq!(&3, tree.find(&"rust").unwrap());
     }
 }
