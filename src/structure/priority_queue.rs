@@ -72,7 +72,7 @@ impl<T: Clone> Clone for PriorityQueue<T> {
     }
 }
 
-impl <T: Ord> Iterator for PriorityQueue<T> {
+impl<T: Ord> Iterator for PriorityQueue<T> {
     type Item = T;
     fn next(&mut self) -> Option<Self::Item> {
         self.pop()
