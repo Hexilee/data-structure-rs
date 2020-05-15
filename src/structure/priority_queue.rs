@@ -7,9 +7,8 @@ impl<T: Ord> PriorityQueue<T> {
     }
 
     fn swap(&mut self, i1: usize, i2: usize) {
-        use std::mem::swap;
         let former_mut = &mut self.0[i1] as *mut T;
-        unsafe { swap(&mut *former_mut, &mut self.0[i2]) }
+        unsafe { std::mem::swap(&mut *former_mut, &mut self.0[i2]) }
     }
 
     fn sink(&mut self) {
@@ -70,5 +69,44 @@ impl<T: Ord> PriorityQueue<T> {
 impl<T: Clone> Clone for PriorityQueue<T> {
     fn clone(&self) -> Self {
         Self(self.0.clone())
+    }
+}
+
+impl <T: Ord> Iterator for PriorityQueue<T> {
+    type Item = T;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.pop()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::PriorityQueue;
+    use test_case::test_case;
+
+    #[test]
+    fn basic() {
+        let mut queue = PriorityQueue::new();
+        queue.insert(3);
+        queue.insert(2);
+        queue.insert(1);
+        assert_eq!(3, queue.len());
+        let min = queue.pop();
+        assert!(min.is_some());
+        assert_eq!(1, min.unwrap());
+    }
+
+    #[test_case(&[0; 0], &[])]
+    #[test_case(&[1], &[1])]
+    #[test_case(&[2, 3, 1], &[1, 2, 3])]
+    #[test_case(&[4, 2, 3, 1], &[1, 2, 3, 4])]
+    #[test_case(&[4, 3, 2, 2, 3, 5, 1, 5], &[1, 2, 2, 3, 3, 4, 5, 5])]
+    fn iter(slice: &[i32], expect: &[i32]) {
+        let mut queue = PriorityQueue::new();
+        for &i in slice {
+            queue.insert(i);
+        }
+        let ordered: Vec<_> = queue.collect();
+        assert_eq!(expect, ordered.as_slice());
     }
 }
